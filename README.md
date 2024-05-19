@@ -5,7 +5,7 @@
 
 ## Introducción
 
-FTCBotics es una aplicación diseñada para la comunidad de FIRST Tech Challenge (FTC) que proporciona análisis de datos, estadísticas y visualizaciones para FTC. Esta herramienta permite a los equipos de FTC tomar decisiones informadas basadas en datos históricos y rendimiento de sus robots.
+FTCBotics es una aplicación diseñada para la comunidad de FIRST Tech Challenge (FTC) que proporciona análisis de datos, estadísticas y visualizaciones para ayudar al proceso de scouting. Esta herramienta permite a los equipos tomar decisiones informadas basadas en datos históricos y rendimiento de sus robots.
 
 ## Características
 
