@@ -6,7 +6,13 @@ AUTHORIZATION_TOKEN = "29E70DEF-2781-450A-A3CF-54050818BF79"
 SERVER = "https://ftc-api.firstinspires.org/v2.0/"
 
 
-def fetchDataFromApi(path_params=None, query_params=None):
+def fetchDataFromApi(path_params="", query_params="") -> requests.Response.json:
+    """
+    Fetches data from the FTC API using the provided path and query parameters.
+    :Return: The JSON response from the API.
+    :rtype: requests.Response.json
+    """
+
     try:
         response = requests.get(
             SERVER + path_params,
@@ -20,14 +26,28 @@ def fetchDataFromApi(path_params=None, query_params=None):
         return None
 
 
-def fetchEventsFromApi(season, team_number=None, event_code=None):
+def fetchEventsFromApi(
+    *, season: str, team_number="", event_code=""
+) -> requests.Response.json:
+    """
+    Fetches events from the FTC API based on the provided season, team number, and event code.
+    :Return: The JSON response from the API.
+    :rtype: requests.Response.json
+    """
     path_params = f"{season}/events/"
     query_params = {"teamNumber": team_number, "eventCode": event_code}
 
     return fetchDataFromApi(path_params, query_params)
 
 
-def fetchTeamFromApi(season, team_number=None, event_code=None, state=None, page=None):
+def fetchTeamFromApi(
+    *, season: str, team_number="", event_code="", state="", page=""
+) -> requests.Response.json:
+    """
+    Fetches teams from the FTC API based on the provided season, team number, event code, state and page.
+    :Return: The JSON response from the API.
+    :rtype: requests.Response.json
+    """
     path_params = f"{season}/teams/"
     query_params = {
         "teamNumber": team_number,
@@ -39,21 +59,32 @@ def fetchTeamFromApi(season, team_number=None, event_code=None, state=None, page
     return fetchDataFromApi(path_params, query_params)
 
 
-def fetchSeasonFromApi(season):
+def fetchSeasonFromApi(*, season: str) -> requests.Response.json:
+    """
+    Fetches seasons from the FTC API based on the provided season.
+    :Return: The JSON response from the API.
+    :rtype: requests.Response.json
+    """
     path_params = f"{season}/"
 
     return fetchDataFromApi(path_params)
 
 
 def fetchMatchFromApi(
-    season,
-    event_code,
-    tournament_level=None,
-    team_number=None,
-    match_number=None,
-    start=None,
-    end=None,
-):
+    *,
+    season: str,
+    event_code: str,
+    tournament_level="",
+    team_number="",
+    match_number="",
+    start="",
+    end="",
+) -> requests.Response.json:
+    """
+    Fetches matches from the FTC API based on the provided season, event code, tournament level, team number, match number, start and end.
+    :Return: The JSON response from the API.
+    :rtype: requests.Response.json
+    """
     path_params = f"{season}/matches/{event_code}/"
     query_params = {
         "tournamentLevel": tournament_level,
@@ -67,14 +98,20 @@ def fetchMatchFromApi(
 
 
 def fetchScoreFromApi(
-    season,
-    event_code,
-    tournament_level,
-    team_number=None,
-    match_number=None,
-    start=None,
-    end=None,
-):
+    *,
+    season: str,
+    event_code: str,
+    tournament_level: str,
+    team_number="",
+    match_number="",
+    start="",
+    end="",
+) -> requests.Response.json:
+    """
+    Fetches scores from the FTC API based on the provided season, event code, tournament level, team number, match number, start and end.
+    :Return: The JSON response from the API.
+    :rtype: requests.Response.json
+    """
     path_params = f"{season}/scores/{event_code}/{tournament_level}/"
 
     query_params = {
@@ -87,12 +124,15 @@ def fetchScoreFromApi(
     return fetchDataFromApi(path_params, query_params)
 
 
-def main():
-    print(fetchEventsFromApi("223"))
-    print(fetchTeamFromApi("2023"))
-    print(fetchSeasonFromApi("2023"))
-    print(fetchMatchFromApi("2023", "USAKCMP"))
-    print(fetchScoreFromApi("2023", "USAKCMP", "qual"))
+def main() -> None:
+    print(
+        fetchScoreFromApi(
+            season="2023",
+            event_code="MXCTQ",
+            tournament_level="qual",
+            team_number="21735",
+        )
+    )
 
 
 if __name__ == "__main__":
