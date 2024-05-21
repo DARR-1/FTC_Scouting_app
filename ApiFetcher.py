@@ -1,5 +1,4 @@
 import requests
-from colorama import Fore, init
 
 
 USERNAME = "darr21735"
@@ -17,8 +16,7 @@ def fetchDataFromApi(path_params=None, query_params=None):
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
-        init()
-        print(Fore.RED + f"Error fetching data from API: {e}")
+        print(f"Error fetching data from API: {e}")
         return None
 
 
@@ -90,7 +88,7 @@ def fetchScoreFromApi(
 
 
 def main():
-    print(fetchEventsFromApi("2023"))
+    print(fetchEventsFromApi("223"))
     print(fetchTeamFromApi("2023"))
     print(fetchSeasonFromApi("2023"))
     print(fetchMatchFromApi("2023", "USAKCMP"))
