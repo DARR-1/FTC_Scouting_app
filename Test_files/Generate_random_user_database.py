@@ -3,7 +3,7 @@ import random
 
 ROWS_LIMIT = 40
 
-data = {"Team_number": ["DARR"], "EPA": [78], "Qualification_matches_played": [5]}
+data = {"Team_number": ["DARR"],"EPA": [78], "Qualification_matches_played": [5]}
 
 for i in range(ROWS_LIMIT):
     data["Team_number"].append(random.randint(1,10000))
@@ -12,5 +12,5 @@ for i in range(ROWS_LIMIT):
 
 df = pd.DataFrame(data)
 
-df.to_csv("./DB/Users.csv")
+df.to_csv("./DB/CDMX.csv")
 print(df)

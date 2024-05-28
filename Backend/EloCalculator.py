@@ -2,15 +2,16 @@ import pandas as pd
 
 
 class TeamRatingSystem:
-    TEAM_DATAFRAME = pd.read_csv(f"./DB/Users.csv")
 
-    def __init__(self, team_number: str) -> None:
+    def __init__(self, team_number: str, event_code: str) -> None:
         """
         Initialize TeamRatingSystem object with the provided team number.
         :param team_number: Team number to initialize the object.
+        :params event_code: The code of the event you want to get its participants teams.
         :rtype: None
         """
         self.team_number = team_number
+        self.TEAM_DATAFRAME = pd.read_csv(f"./DB/{event_code}")
         self.user_row = self.TEAM_DATAFRAME.loc[
             self.TEAM_DATAFRAME["Team_number"] == self.team_number
         ]

@@ -44,7 +44,7 @@ def fetchEventsFromApi(
     return fetchDataFromApi(path_params, query_params)
 
 
-def fetchTeamFromApi(
+def fetchTeamsFromApi(
     *, season: str, team_number="", event_code="", state="", page=""
 ) -> requests.Response.json:
     """
