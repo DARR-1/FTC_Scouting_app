@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import ApiFetcher
 
-DATABASE_FOLDER = "./DB"
+DATABASE_FOLDER = "././DB"
 
 
 def teamsList(season: int) -> tuple:
@@ -19,7 +19,7 @@ def teamsList(season: int) -> tuple:
     total_pages = teams_df.loc[0, "pageTotal"]
 
     for i in range(total_pages):
-        print("iteration:", f'{i + 1}/{total_pages}')
+        print("iteration:", f"{i + 1}/{total_pages}")
         request = ApiFetcher.fetchTeamsFromApi(season=season, page=i + 1)
         teams_df = pd.json_normalize(request, record_path="teams")
 
@@ -81,32 +81,37 @@ def matchesResults(season: int, event_code: str) -> pd.DataFrame:
         matches_data["Teams Out Of Field"].append(teams_out_of_field)
 
     match_results_df = pd.DataFrame(matches_data)
+
+    match_results_df.to_csv(f"{DATABASE_FOLDER}/Matches/{season}{event_code}.csv")
+
     return match_results_df
 
 
-def createEloDatabase(season: int) -> pd.DataFrame:
+def createEPADatabase(season: int, week_one_average_score: float) -> pd.DataFrame:
     """
-    Creates a database with all the teams the number of qualification matches played and their ELO.
-    :params season: the numeric year of the season you want to generate an ELO database.
+    Creates a database with all the teams the number of qualification matches played and their EPA.
+    :params season: the numeric year of the season you want to generate an EPA database.
     :Return: The teams that participate in the event.
     :rtype: pd.dataframe
     """
     teams_list = teamsList(season)
 
     data = {
-        'team_number': teams_list,
-        'ELO': [],
-        'Qualification_matches_played': [],
+        "team_number": teams_list,
+        "EPA": [],
+        "Qualification_matches_played": [],
     }
 
     for i in range(len(teams_list)):
-        data["ELO"].append(1500)
-        data['Qualification_matches_played'].append(0)
+        data["EPA"].append(week_one_average_score / 3)
+        data["Qualification_matches_played"].append(0)
 
-    ELO_df = pd.DataFrame(data)
-    ELO_df.to_csv(f'{DATABASE_FOLDER}/ELO/{season}.csv')
+    EPA_df = pd.DataFrame(data)
+    EPA_df.to_csv(f"{DATABASE_FOLDER}/EPA/{season}.csv")
 
-    return ELO_df
+    return EPA_df
+
 
 if __name__ == "__main__":
-    print(createEloDatabase(2023))
+    # matchesResults(2023, "MXCTQ")
+    createEPADatabase(2023, 73.4)

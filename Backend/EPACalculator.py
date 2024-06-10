@@ -3,18 +3,19 @@ import pandas as pd
 
 class TeamRatingSystem:
 
-    def __init__(self, team_number: str, event_code: str) -> None:
+    def __init__(self, team_number: str, season: str, team_dataframe) -> None:
         """
         Initialize TeamRatingSystem object with the provided team number.
         :param team_number: Team number to initialize the object.
         :params event_code: The code of the event you want to get its participants teams.
         :rtype: None
         """
+        self.season = season
         self.team_number = team_number
-        self.TEAM_DATAFRAME = pd.read_csv(f"./DB/{event_code}")
+        self.TEAM_DATAFRAME = team_dataframe
         self.user_row = self.TEAM_DATAFRAME.loc[
-            self.TEAM_DATAFRAME["Team_number"] == self.team_number
-        ]
+            self.TEAM_DATAFRAME["team_number"] == self.team_number
+        ].iloc[0]
 
     def EPA(self) -> int:
         """
@@ -23,7 +24,7 @@ class TeamRatingSystem:
         :rtype: int
         """
         self.user_row = self.TEAM_DATAFRAME.loc[
-            self.TEAM_DATAFRAME["Team_number"] == self.team_number
+            self.TEAM_DATAFRAME["team_number"] == self.team_number
         ]
 
         user_EPA = self.user_row.iloc[0]["EPA"]
@@ -40,7 +41,7 @@ class TeamRatingSystem:
         EPA = 0
         for members in alliance_members:
             member_row = self.TEAM_DATAFRAME.loc[
-                self.TEAM_DATAFRAME["Team_number"] == members
+                self.TEAM_DATAFRAME["team_number"] == members
             ]
             member_EPA = member_row.iloc[0]["EPA"]
 
@@ -87,6 +88,7 @@ class TeamRatingSystem:
         blue_alliance_members: list,
         red_alliance_members: list,
         win: bool,
+        add_qmp=True,
     ) -> int:
         """
         Update the team's EPA based on match results.
@@ -98,7 +100,9 @@ class TeamRatingSystem:
         :Return: The updated EPA score of the team.
         :rtype: int
         """
-        qualification_matches_played = self.user_row.iloc[0]["EPA"]
+        tmp_dataframe = pd.read_csv(f"./DB/EPA/{self.season}.csv")
+
+        qualification_matches_played = self.user_row.iloc[3]
 
         K = self.updateK(qualification_matches_played)
 
@@ -112,16 +116,25 @@ class TeamRatingSystem:
         delta_of_EPA -= M * (blue_alliance_score - blue_alliance_EPA)
         delta_of_EPA = K * 1 / (1 + M) * abs(delta_of_EPA)
 
+        print(delta_of_EPA)
         if win:
             EPA += delta_of_EPA
         elif not win:
             EPA -= delta_of_EPA
 
-        self.TEAM_DATAFRAME.loc[
-            self.TEAM_DATAFRAME["Team_number"] == self.team_number, "EPA"
-        ] = float(EPA)
+        tmp_dataframe.loc[tmp_dataframe["team_number"] == self.team_number, "EPA"] = (
+            float(EPA)
+        )
 
-        self.TEAM_DATAFRAME.to_csv("./DB/Users.csv", index=False)
+        if add_qmp:
+            tmp_dataframe.loc[
+                tmp_dataframe["team_number"] == self.team_number,
+                "Qualification_matches_played",
+            ] = (
+                qualification_matches_played + 1
+            )
+
+        tmp_dataframe.to_csv(f"./DB/EPA/{self.season}.csv", index=False)
 
         return EPA
 
