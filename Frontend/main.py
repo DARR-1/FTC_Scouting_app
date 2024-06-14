@@ -24,7 +24,7 @@ def main(page: ft.Page):
     page.controls.append(my_router.body)
 
     print(page.width)
-    page.go("/")
+    page.go("/Database")
 
 
 ft.app(target=main, assets_dir="Assets", view=ft.AppView.FLET_APP)

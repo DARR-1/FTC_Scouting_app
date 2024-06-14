@@ -1,4 +1,5 @@
 from Views.HomeView import homeView
+from Views.DatabasesView import databaseView
 
 
 class Router:
@@ -10,8 +11,9 @@ class Router:
         self.page_height = page.height
         self.routes = {
             "/": homeView(page, self.page_width, self.page_height),
+            "/Database": databaseView(page, self.page_width, self.page_height),
         }
-        self.body = self.routes["/"]
+        self.body = self.routes["/Database"]
 
     def route_change(self, route):
         self.body = self.routes[route.route]
@@ -24,5 +26,6 @@ class Router:
         self.page_height = self.page.height
         self.routes = {
             "/": homeView(self.page, self.page_width, self.page_height),
+            "/Database": databaseView(self.page, self.page_width, self.page_height),
         }
-        self.body = self.routes["/"]
+        self.body = self.routes["/Database"]

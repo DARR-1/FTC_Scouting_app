@@ -2,9 +2,10 @@ import flet as ft
 from User_controls.MenuBar import menuBar
 from Widgets.DatabaseOption import makeDatabaseOption
 from Widgets.Subtitle import makeSubtitle
+from Widgets.SearchBar import makeSearchBar
 
 
-def homeView(page, page_width, page_height, ft=ft) -> ft.Column:
+def databaseView(page, page_width, page_height, ft=ft) -> ft.Column:
 
     responsive_multiplier = page_width / 540
 
@@ -37,34 +38,6 @@ def homeView(page, page_width, page_height, ft=ft) -> ft.Column:
         )
 
         return button
-
-        return subtitle
-
-    def goToPrediciton(e):
-        page.go("/predictions")
-
-    def goToAllianceGenerator(e):
-        page.go("/alliances")
-
-    main_functions = ft.Container(
-        ft.Row(
-            [
-                makeFunctionButtons(
-                    "Predictions",
-                    "Make accurate predictions for any match.",
-                    20,
-                    goToPrediciton,
-                ),
-                makeFunctionButtons(
-                    "Alliance Generator",
-                    "Don’t know who to choose for your alliance. Use the alliance generator to get your best alliances.",
-                    16,
-                    goToAllianceGenerator,
-                ),
-            ],
-            alignment=ft.MainAxisAlignment.SPACE_AROUND,
-        )
-    )
 
     databases = ft.Column(
         [
@@ -101,12 +74,18 @@ def homeView(page, page_width, page_height, ft=ft) -> ft.Column:
         ]
     )
 
+    searchbar = makeSearchBar(
+        databases.controls, "Insert the database name", responsive_multiplier
+    )
+
     content = ft.Container(
         ft.Column(
             [
-                makeSubtitle("Welcome back, team 4010", responsive_multiplier),
-                main_functions,
-                makeSubtitle("Your Databases", responsive_multiplier),
+                makeSubtitle(
+                    "Choose the database you want to use for the predictions:",
+                    responsive_multiplier,
+                ),
+                searchbar,
                 databases,
             ],
             scroll=ft.ScrollMode.HIDDEN,
