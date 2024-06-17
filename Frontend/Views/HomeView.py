@@ -114,12 +114,4 @@ def homeView(page, page_width, page_height, ft=ft) -> ft.Column:
         width=page.width,
     )
 
-    page.bottom_appbar = ft.BottomAppBar(
-        bgcolor=page.bgcolor,
-        content=ft.Column(
-            [menuBar(page, page_width)], alignment=ft.MainAxisAlignment.CENTER
-        ),
-        height=109 * responsive_multiplier,
-    )
-
     return content

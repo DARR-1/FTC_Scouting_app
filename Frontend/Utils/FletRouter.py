@@ -1,5 +1,6 @@
 from Views.HomeView import homeView
 from Views.DatabasesView import databaseView
+from Views.AddDataView import dataView
 
 
 class Router:
@@ -12,12 +13,16 @@ class Router:
         self.routes = {
             "/": homeView(page, self.page_width, self.page_height),
             "/Database": databaseView(page, self.page_width, self.page_height),
+            "/AddData": dataView(page),
         }
-        self.body = self.routes["/Database"]
+        self.body = self.routes["/"]
+        page.bottom_appbar = self.body.appbar
 
     def route_change(self, route):
         self.body = self.routes[route.route]
         self.body.update()
+
+        page.bottom_appbar = self.body.appbar
 
         print("Ruta cambiada", route.route)
 
@@ -27,5 +32,6 @@ class Router:
         self.routes = {
             "/": homeView(self.page, self.page_width, self.page_height),
             "/Database": databaseView(self.page, self.page_width, self.page_height),
+            "/AddData": dataView(self.page),
         }
-        self.body = self.routes["/Database"]
+        self.body = self.routes["/"]
